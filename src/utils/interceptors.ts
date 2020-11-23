@@ -18,19 +18,20 @@ const rspInterceptor = (chain) => {
   const requestParams = chain.requestParams;
 
   return chain.proceed(requestParams).then((res) => {
-    console.log(res);
-    if (res.statusCode > 200 && res.statusCode < 300) {
+    // console.log(res);
+    if (res.statusCode == HTTP_STATUS.NOT_FOUND) {
       return Promise.reject('请求资源不存在');
     } else if (res.statusCode === HTTP_STATUS.BAD_GATEWAY) {
       return Promise.reject('服务端出现了问题');
     } else if (res.statusCode === HTTP_STATUS.FORBIDDEN) {
       Taro.setStorageSync('Authorization', '');
       // TODO 根据自身业务修改
-      return Promise.reject('没有权限访问');
+      // return Promise.reject('没有权限访问');
+      return res.data;
     } else if (res.statusCode === HTTP_STATUS.AUTHENTICATE) {
       Taro.setStorageSync('Authorization', '');
       return Promise.reject('需要鉴权');
-    } else if (res.statusCode === HTTP_STATUS.SUCCESS) {
+    } else {
       return res.data;
     }
   });

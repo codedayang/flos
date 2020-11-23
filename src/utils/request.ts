@@ -1,16 +1,17 @@
 import Taro from '@tarojs/taro';
 import { baseUrl, noConsole } from '../config';
 import interceptors from './interceptors';
+import {login} from "../service/apiService";
 
 interceptors.forEach((interceptorItem) => Taro.addInterceptor(interceptorItem));
 
-interface OptionsType {
+interface OptionsType<T> {
   method: 'GET' | 'POST' | 'PUT';
-  data: any;
+  data: T;
   url: string;
   noLoading?: boolean;
 }
-export default (options: OptionsType = { method: 'GET', data: {}, url: '', noLoading: false }) => {
+export default <REQ, RES> (options: OptionsType<REQ>) => {
   if (!options.noLoading) {
     Taro.showLoading({
       title: '加载中'
@@ -19,20 +20,26 @@ export default (options: OptionsType = { method: 'GET', data: {}, url: '', noLoa
   if (!noConsole) {
     console.log(`${new Date().toLocaleString()}【 URL=${options.url} 】PARAM=${JSON.stringify(options.data)}`);
   }
-  for (const key in options.data) {
-    if (options.data.hasOwnProperty(key) && (options.data[key] === undefined || options.data[key] == null)) {
-      delete options.data[key];
-    }
-  }
+  // for (const key in options.data) {
+  //   if (options.data.hasOwnProperty(key) && (options.data[key] === undefined || options.data[key] == null)) {
+  //     delete options.data[key];
+  //   }
+  // }
 
-  return new Promise(((resolve, reject) => {
-    Taro.request({
+  // let token = Taro.getStorageSync('token');
+  // if (token == undefined) {
+  //   login(Taro.lo)
+  //
+  // }
+
+  return new Promise(((resolve, _) => {
+    Taro.request<RES, REQ>({
       url: baseUrl + options.url,
       data: {
         ...options.data
       },
       header: {
-        'X-Token': Taro.getStorageSync('token'),
+        'token': Taro.getStorageSync('token'),
         'Content-Type': 'application/json'
       },
       // @ts-ignore
@@ -44,7 +51,7 @@ export default (options: OptionsType = { method: 'GET', data: {}, url: '', noLoa
 
 
       if (!noConsole) {
-        console.log(res);
+        // console.log(res);
         console.log(`${new Date().toLocaleString('zh', {hour12: false})}【${options.url} 】【返回】`, res);
       }
 

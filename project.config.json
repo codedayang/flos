@@ -2,7 +2,7 @@
   "miniprogramRoot": "./dist",
   "projectname": "flos",
   "description": "关于发布/订阅通知的小程序",
-  "appid": "wx84875b05f9ff61a7",
+  "appid": "wxe48a3d699f7d6cfa",
   "setting": {
     "urlCheck": true,
     "es6": false,

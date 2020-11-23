@@ -163,7 +163,7 @@ const modelsIndex = fs.readFileSync(`./src/models/index.ts`, 'utf8');
 if (!modelsIndex.includes(`${dirName}Model`)) {
   const _newModelsIndex = modelsIndex.replace(/common,/, modelsIndexTep1);
   const newModelsIndex = _newModelsIndex.replace("import common from './common';", modelsIndexTep2);
-  fs.writeFileSync('./src/models/index.ts', newModelsIndex);
+  fs.writeFileSync('./src/models/index.tsx', newModelsIndex);
 }
 
 console.log(`模版${dirName}已创建 enjoy`);

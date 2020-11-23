@@ -1,5 +1,8 @@
 import { AnyAction, Dispatch } from 'redux';
 import { StateType as TestState } from './testModel';
+import { StateType as InboxState } from './inboxModel';
+import { StateType as ChannelState } from './channelModel';
+import { StateType as OutboxState } from './outboxModel';
 
 export interface Loading {
   global: boolean;
@@ -12,5 +15,7 @@ export interface ConnectProps {
 
 export interface ConnectState {
   loading: Loading;
-  test: TestState;
+  inbox: InboxState;
+  channel: ChannelState;
+  outbox: OutboxState;
 }
